@@ -51,7 +51,7 @@ const mapStateToProps = (state) => {
                 .name,
             };
           }),
-    authors: state.authors,
+    authors: state.authors.length === 0 ? [] : state.authors,
   };
 };
 
