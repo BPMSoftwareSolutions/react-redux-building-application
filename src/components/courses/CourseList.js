@@ -2,7 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-const CourseList = ({ courses, onDeleteClick }) => (
+const CourseList = ({ courses, onDeleteClick }) => {
+  
+  return (
   <table className="table">
     <thead>
       <tr>
@@ -26,7 +28,7 @@ const CourseList = ({ courses, onDeleteClick }) => (
               </a>
             </td>
             <td>
-              <Link to={"/course/" + course.slug}>{course.title}</Link>
+              <Link to={`/course/${course.slug}`}>{course.title}</Link>
             </td>
             <td>{course.authorName}</td>
             <td>{course.category}</td>
@@ -43,7 +45,8 @@ const CourseList = ({ courses, onDeleteClick }) => (
       })}
     </tbody>
   </table>
-);
+  );
+}
 
 CourseList.propTypes = {
   courses: PropTypes.array.isRequired,

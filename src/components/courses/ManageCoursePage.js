@@ -4,9 +4,11 @@ import { loadCourses, saveCourse } from "../../redux/actions/courseActions";
 import { loadAuthors } from "../../redux/actions/authorActions";
 import PropTypes from "prop-types";
 import CourseForm from "./CourseForm";
-import { newCourse } from "../../../tools/mockData";
+import { newCourse } from "../../tools/mockData";
 import Spinner from "../common/Spinner";
 import { toast } from "react-toastify";
+import { compose } from "redux";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 export function ManageCoursePage({
   courses,
@@ -14,7 +16,7 @@ export function ManageCoursePage({
   loadAuthors,
   loadCourses,
   saveCourse,
-  history,
+  navigate,
   ...props
 }) {
   const [course, setCourse] = useState({ ...props.course });
@@ -66,7 +68,7 @@ export function ManageCoursePage({
     saveCourse(course)
       .then(() => {
         toast.success("Course saved (" + course.title + ")");
-        history.push("/courses");
+        navigate("/courses");
       })
       .catch((error) => {
         setSaving(false);
@@ -95,14 +97,15 @@ ManageCoursePage.propTypes = {
   loadCourses: PropTypes.func.isRequired,
   loadAuthors: PropTypes.func.isRequired,
   saveCourse: PropTypes.func.isRequired,
-  history: PropTypes.object.isRequired,
+  navigate: PropTypes.object.isRequired,
 };
 
 export function getCourseBySlug(courses, slug) {
   return courses.find((course) => course.slug === slug) || null;
 }
 
-function mapStateToProps(state, ownProps) {
+const mapStateToProps = (state, ownProps) => {
+  // const params = useParams();
   const slug = ownProps.match.params.slug;
   const course =
     slug && state.courses.length > 0
@@ -113,7 +116,7 @@ function mapStateToProps(state, ownProps) {
     courses: state.courses,
     authors: state.authors,
   };
-}
+};
 
 const mapDispatchToProps = {
   loadCourses,
@@ -121,4 +124,28 @@ const mapDispatchToProps = {
   saveCourse,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManageCoursePage);
+const withRouter = Component => props => {
+  const location = useLocation();
+  const match = { params: useParams() };
+  const navigate = useNavigate();
+  return <Component location={location} match={match} navigate={navigate} {...props} />;
+};
+
+// function withRouter(Component) {
+//   function ComponentWithRouterProp(props) {
+//     let location = useLocation();
+//     let navigate = useNavigate();
+//     let params = useParams();
+    
+//     return (
+//       <Component
+//         {...props}
+//         router={{ location, navigate, params }}
+//       />
+//     );
+//   }
+
+//   return ComponentWithRouterProp;
+// }
+
+export default compose(withRouter, connect(mapStateToProps, mapDispatchToProps))(ManageCoursePage);

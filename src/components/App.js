@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import HomePage from "./home/HomePage";
 import AboutPage from "./about/AboutPage";
 import Header from "./common/header";
@@ -13,14 +13,14 @@ function App() {
   return (
     <div className="container-fluid">
       <Header />
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route path="/about" component={AboutPage} />
-        <Route path="/courses" component={CoursesPage} />
-        <Route path="/course/:slug" component={ManageCoursePage} />
-        <Route path="/course" component={ManageCoursePage} />
-        <Route component={PageNotFound} />
-      </Switch>
+      <Routes>
+        <Route exact path="/" element={<HomePage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/courses" element={<CoursesPage />} />
+        <Route path="/course/:slug" element={<ManageCoursePage />} />
+        <Route path="/course" element={<ManageCoursePage />} />
+        <Route element={<PageNotFound />} />
+      </Routes>
       <ToastContainer autoClose={3000} hideProgressBar />
     </div>
   );

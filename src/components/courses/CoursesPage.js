@@ -5,7 +5,7 @@ import * as authorActions from "../../redux/actions/authorActions";
 import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import CourseList from "./CourseList";
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import Spinner from "../common/Spinner";
 import { toast } from "react-toastify";
 
@@ -42,7 +42,7 @@ class CoursesPage extends React.Component {
   render() {
     return (
       <>
-        {this.state.redirectToAddCoursePage && <Redirect to="/course" />}
+        {this.state.redirectToAddCoursePage && <Navigate to="/course" />}
         <h2>Courses</h2>
         {this.props.loading ? (
           <Spinner />
