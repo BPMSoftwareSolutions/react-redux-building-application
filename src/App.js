@@ -1,34 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
-import axios from 'axios';
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import HomePage from "./components/home/HomePage";
+import AboutPage from "./components/about/AboutPage";
+import Header from "./components/common/header";
+import PageNotFound from "./components/PageNotFound";
+import CoursesPage from "./components/courses/CoursesPage";
+import ManageCoursePage from "./components/courses/ManageCoursePage";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
-  axios.get('https://conference-demo-sidney.herokuapp.com/api/v1/courses')
-  .then((response) => {
-    // handle success
-    console.log(response);
-  })
-  .catch((error) => {
-    // handle error
-    console.log(error);
-  });
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container-fluid">
+      <Header />
+      <Routes>
+        <Route exact path="/" element={<HomePage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/courses" element={<CoursesPage />} />
+        <Route path="/course/:slug" element={<ManageCoursePage />} />
+        <Route path="/course" element={<ManageCoursePage />} />
+        <Route element={<PageNotFound />} />
+      </Routes>
+      <ToastContainer autoClose={3000} hideProgressBar />
     </div>
   );
 }
